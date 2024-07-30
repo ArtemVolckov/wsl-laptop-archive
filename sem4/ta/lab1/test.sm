@@ -1,0 +1,51 @@
+%header smc_recognizer.h
+%class SmcRecognizer
+
+%start MainMap::Start
+
+%map MainMap
+%%
+
+
+
+
+
+
+
+
+FSM: fsm
+{
+    initial: START,
+    {
+        START  : alnum_dot_slash -> IN_ALNUM_DOT_SLASH,
+        IN_ALNUM_DOT_SLASH : alnum_dot_slash -> IN_ALNUM_DOT_SLASH,
+        IN_ALNUM_DOT_SLASH : blank -> IN_BLANK,
+        IN_BLANK : alnum_blank -> IN_ALNUM_BLANK,
+        IN_ALNUM_BLANK : alnum_blank -> IN_ALNUM_BLANK,
+        IN_ALNUM_BLANK : alnum -> END,
+        END : ^ -> END
+    }
+}
+
+%class MainMap
+{
+    alnum_dot_slash (char c)
+    {
+        return isalnum(c) || c == '.' || c == '/';
+    }
+
+    blank (char c)
+    {
+        return isspace(c);
+    }
+
+    alnum_blank (char c)
+    {
+        return isalnum(c) || isspace(c);
+    }
+
+    alnum (char c)
+    {
+        return isalnum(c);
+    }
+}
